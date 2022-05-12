@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreDisplay = document.querySelector('#score')
   const startBtn = document.querySelector('#start-button')
   const width = 10
+  let nextRandom = 0
 
   //the Tetrominoes
   const ltetromino = [
@@ -65,7 +66,7 @@ function undraw() {
 timerID = setInterval(moveDown, 1000)
 
 //Movedown function
-function moveDown(){
+function moveDown() {
   undraw()
   currentPosition += width
   draw()
@@ -76,6 +77,7 @@ function Freeze(){
   if(current.some(index => squares[currentPosition + index + width].classList.contains("taken"))) {
     current.forEach(index => squares[currentPosition + index].classList.add("taken"))
     // Start a new tetromino falling
+    random = nextRandom
     random = Math.floor(Math.random() * TheTetrominoes.length)
     current = TheTetrominoes[random][currentPosition]
     currentPosition = 4

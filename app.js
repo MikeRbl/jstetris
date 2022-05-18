@@ -50,11 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let random = Math.floor(Math.random()*TheTetrominoes.length)
   let current = TheTetrominoes[random][currentRotation]
 
-  // Draw the Tetromino
-  function draw() {
-    current.forEach(index => {
-      squares[currentPosition + index].classList.add('tetromino')
-      })
+// Draw the Tetromino
+function draw() {
+  current.forEach(index => {
+    squares[currentPosition + index].classList.add('tetromino')
+  }) 
   }
 // Undraw the Tetrominoe
 function undraw() {
@@ -64,6 +64,20 @@ function undraw() {
 }
 // Make the tetromino move down every second
 timerID = setInterval(moveDown, 1000)
+
+// assign functions to KeyCodes
+function control(e){
+  if(e.keycode === 37){
+    moveLeft()
+  } else if (e.keyCode === 38) {
+    rotate()
+  } else if (e.keyCode === 39) {
+    moveRight()
+  } else if (e.keyCode === 40) {
+    moveDown()
+  }
+}
+document.addEventListener('keyup', control)
 
 //Movedown function
 function moveDown() {
@@ -83,5 +97,26 @@ function Freeze(){
     currentPosition = 4
     draw()
   }
+}
+// move the tetrominoe left unless is at the edge or there is a blockage
+function moveLeft() {
+  undraw()
+  const isAtLeftEdge = current.some(index => (currentPosition + index) % width === 0)
+  if(!isAtLeftEdge) currentPosition -=1
+  if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+    currentPosition +=1
+  }
+  draw()
+}
+
+//move the tetrominoe right, unless is at the edge or there is a blockage
+function moveRight() {
+  undraw()
+  const isAtRightEdge = current.some(index => (currentPosition + index) % width === width -1)
+  if(!isAtRightEdge) currentPosition +=1
+  if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+    currentPosition -=1
+  }
+  draw()
 }
 })
